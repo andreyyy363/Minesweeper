@@ -28,17 +28,31 @@ void stripes()
     cout << endl;
 }
 //Cout для Win
-void winner()
+void winner(bool checker, bool win, int length, int width, int** arr, int** check)
 {
-    stripes();
-    cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
-    cout << "##  ##   ##   ##  ##   ##           ##   ##     ##      ## ##                  #   " << endl;
-    cout << "##  ##   ##   ##  ##   ##           ##   ##     ##     # ## #              #    #  " << endl;
-    cout << " ## ##   ##   ##  ##   ##           ## # ##     ##     ## ##                     # " << endl;
-    cout << "  ##     ##   ##  ##   ##           # ### #     ##     ##  ##              #    #  " << endl;
-    cout << "  ##     ##   ##  ##   ##            ## ##      ##     ##  ##                  #   " << endl;
-    cout << "  ##      ## ##    ## ##            ##   ##    ####   ###  ##                      " << endl;
-    stripes();
+    int i, j;
+    //Перевірка на перемогу
+    if (checker)
+    {
+        for (i = 0; i < length; i++)
+        {
+            for (j = 0; j < width; j++)
+            {
+                if (check[i][j] == FLAG && arr[i][j] == MINE)
+                    win = true;
+            }
+        }
+    }
+    if (win)
+        stripes();
+        cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
+        cout << "##  ##   ##   ##  ##   ##           ##   ##     ##      ## ##                  #   " << endl;
+        cout << "##  ##   ##   ##  ##   ##           ##   ##     ##     # ## #              #    #  " << endl;
+        cout << " ## ##   ##   ##  ##   ##           ## # ##     ##     ## ##                     # " << endl;
+        cout << "  ##     ##   ##  ##   ##           # ### #     ##     ##  ##              #    #  " << endl;
+        cout << "  ##     ##   ##  ##   ##            ## ##      ##     ##  ##                  #   " << endl;
+        cout << "  ##      ## ##    ## ##            ##   ##    ####   ###  ##                      " << endl;
+        stripes();
 }
 //Cout для Lose
 void loser()
@@ -489,21 +503,8 @@ int main()
                 continue;
             }
         }
-        //Перевірка на перемогу
-        if (checker)
-        {
-            for (i = 0; i < length; i++)
-            {
-                for (j = 0; j < width; j++)
-                {
-                    if (check[i][j] == FLAG && arr[i][j] == MINE)
-                        win = true;
-                }
-            }
-        }
-        if (win)
-            winner();
-
+        
+        winner(checker, win, length, width, arr, check);
         cleanram(arr, check, length);
 
         //Рестарт гри (за бажанням гравця)
