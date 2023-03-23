@@ -229,8 +229,8 @@ void coutfield(int** arr, int** check, int length, int width, bool lose, bool& m
             cout << j << setw(5);
         cout << endl;
 
-        for (j = 0; j <= 2.4 * width; j++)
-            cout << "__";
+        for (j = 0; j <= (5 * width) - 3; j++)
+            cout << "_";
         cout << endl;
 
         for (i = 0; i < length; i++)
