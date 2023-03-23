@@ -9,19 +9,18 @@ const int MINE = 9, FLAG = 2, CHECKED = 1, NOTHING = 0;
 //COUT ФУНКЦІЇ
 
 //Cout помилки введення розміру
-void err_size(bool err_length, bool err_width)
+void err_size(bool err_length, bool err_width, bool err_mines, int length_x_width)
 {
-    cout << "Try again!" << endl << endl;
+    cout << endl << "Try again!" << endl << endl;
     if (err_length)
         cout << "Please, enter field length (^) (8 - 30): ";
     if (err_width)
         cout << "Please, enter field width (>) (8 - 30): ";
+    if (err_mines)
+        cout << "Please, enter the number of mines (*) on the field (5 - " << length_x_width - 10 << "): ";
 }
 //Cout помилки введення кількості мін
-void err_mines()
-{
 
-}
 void stripes()
 {
     cout << endl;
@@ -179,7 +178,7 @@ int** arrcheck(const int length, const int width)
 
 void size(int& length, int& width, int& mine_number, int& length_x_width)
 {
-    bool err_length = false, err_width = false;
+    bool err_length = false, err_width = false, err_mines = false;
     cout << "------------------------------" << endl;
     cout << "Please, enter field length (^) (8 - 30): ";
     while (!(cin >> length) || length < 8 || length > 30)
@@ -187,7 +186,7 @@ void size(int& length, int& width, int& mine_number, int& length_x_width)
         cin.clear();
         fflush(stdin);
         err_length = true;
-        err_size(err_length, err_width);
+        err_size(err_length, err_width, err_mines, length_x_width);
         err_length = false;
     }
 
@@ -197,23 +196,21 @@ void size(int& length, int& width, int& mine_number, int& length_x_width)
         cin.clear();
         fflush(stdin);
         err_width = true;
-        err_size(err_length, err_width);
+        err_size(err_length, err_width, err_mines, length_x_width);
         err_width = false;
     }
 
     length_x_width = length * width;
 
     cout << "Please, enter the number of mines (*) on the field (5 - " << length_x_width - 10 << "): ";
-    cin >> mine_number;
-    cout << endl;
 
-    while (mine_number < 5 || mine_number > length_x_width - 10)
+    while (!(cin >> mine_number) || mine_number < 5 || mine_number > length_x_width - 10)
     {
-        cout << "Try again!" << endl;
-        cout << endl;
-        cout << "Please, enter the number of mines (*) on the field (5 - " << length_x_width - 10 << "): ";
-        cin >> mine_number;
-        cout << endl;
+        cin.clear();
+        fflush(stdin);
+        err_mines = true;
+        err_size(err_length, err_width, err_mines, length_x_width);
+        err_mines = false;
     }
 }
 //Функція для coutа поля
