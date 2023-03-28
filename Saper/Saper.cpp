@@ -367,7 +367,7 @@ void autoopen(int x, int y, int** arr, int length, int width, int** check)
     }
 }
 //Функція для обрання дії
-bool action_choice(int x, int y, int** arr, int length, int width, int** check, bool mistake, bool lose)
+bool action_choice(int x, int y, int** arr, int length, int width, int** check, bool &mistake, bool lose)
 {
     string action;
     cout << endl;
@@ -509,6 +509,7 @@ int main()
 
             if (action_choice(x, y, arr, length, width, check, mistake, lose))
                 continue;
+
             if (!(action_choice(x, y, arr, length, width, check, mistake, lose)))
                 break;
         }
