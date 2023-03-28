@@ -2,13 +2,12 @@
 #include <ctime>
 #include <iomanip>
 
-
 using namespace std;
 const int MINE = 9, FLAG = 2, CHECKED = 1, NOTHING = 0;
 
 //COUT ФУНКЦІЇ
 
-//Cout помилки введення розміру
+//Cout помилки введення розміру та кількості мін
 void err_size(bool err_length, bool err_width, bool err_mines, int length_x_width)
 {
     cout << endl << "Try again!" << endl << endl;
@@ -19,7 +18,6 @@ void err_size(bool err_length, bool err_width, bool err_mines, int length_x_widt
     if (err_mines)
         cout << "Please, enter the number of mines (*) on the field (5 - " << length_x_width - 10 << "): ";
 }
-//Cout помилки введення кількості мін
 
 void stripes()
 {
@@ -44,6 +42,7 @@ void winner(bool checker, bool win, int length, int width, int** arr, int** chec
         }
     }
     if (win)
+    {
         stripes();
         cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
         cout << "##  ##   ##   ##  ##   ##           ##   ##     ##      ## ##                  #   " << endl;
@@ -53,6 +52,7 @@ void winner(bool checker, bool win, int length, int width, int** arr, int** chec
         cout << "  ##     ##   ##  ##   ##            ## ##      ##     ##  ##                  #   " << endl;
         cout << "  ##      ## ##    ## ##            ##   ##    ####   ###  ##                      " << endl;
         stripes();
+    }
 }
 //Cout для Lose
 void loser()
@@ -366,6 +366,50 @@ void autoopen(int x, int y, int** arr, int length, int width, int** check)
         autoopen(x + 1, y + 1, arr, length, width, check);
     }
 }
+//Функція для обрання дії
+bool action_choice(int x, int y, int** arr, int length, int width, int** check, bool mistake, bool lose)
+{
+    string action;
+    cout << endl;
+    cout << "Choose an action: open a field (O) or put a flag (P): ";
+    cin >> action;
+    cout << endl;
+
+    if (action == "o" || action == "O")
+    {
+        fieldopening(x, y, length, width);
+
+        //Якщо обрано порожнє місце
+        if (arr[y][x] != 9)
+        {
+            autoopen(x, y, arr, length, width, check);
+            return true;
+        }
+        //Якщо обрано місце з міною
+        else
+        {
+            lose = true;
+            system("cls");
+            coutfield(arr, check, length, width, lose, mistake);
+            loser();
+            return false;
+        }
+    }
+
+    if (action == "p" || action == "P")
+    {
+        putflag(check, length, width);
+        return true;
+    }
+    else
+    {
+        cout << endl << "Try again!" << endl;
+        mistake = true;
+        return true;
+    }
+}
+
+
 //Функція для рестарту гри
 bool restart()
 {
@@ -417,7 +461,6 @@ void cleanram(int** arr, int** check, int length)
 int main()
 {
     int length, width, i, j, mine_number, length_x_width;
-
     cout << "Saper v.1.5 (alpha)" << endl;
 
     //ГРА
@@ -426,11 +469,9 @@ int main()
         size(length, width, mine_number, length_x_width);
         system("cls");
         cout << "New game" << endl << endl;
-
         //Генерація поля
         int** arr = arrfield(length, width, mine_number, length_x_width);
         int** check = arrcheck(length, width);
-
         bool checker = false, win = false, lose = false, mistake = false;
         while (!checker)
         {
@@ -465,43 +506,11 @@ int main()
                 break;
 
             int x = 0, y = 0;
-            string action;
-            cout << endl;
-            cout << "Choose an action: open a field (O) or put a flag (P): ";
-            cin >> action;
-            cout << endl;
 
-            if (action == "o" || action == "O")
-            {
-                fieldopening(x, y, length, width);
-
-                //Якщо обрано порожнє місце
-                if (arr[y][x] != 9)
-                {
-                    autoopen(x, y, arr, length, width, check);
-                    continue;
-                }
-                //Якщо обрано місце з міною
-                else
-                {
-                    lose = true;
-                    system("cls");
-                    coutfield(arr, check, length, width, lose, mistake);
-                    loser();
-                    break;
-                }
-            }
-            if (action == "p" || action == "P")
-            {
-                putflag(check, length, width);
+            if (action_choice(x, y, arr, length, width, check, mistake, lose))
                 continue;
-            }
-            else
-            {
-                cout << endl << "Try again!" << endl;
-                mistake = true;
-                continue;
-            }
+            if (!(action_choice(x, y, arr, length, width, check, mistake, lose)))
+                break;
         }
         
         winner(checker, win, length, width, arr, check);
