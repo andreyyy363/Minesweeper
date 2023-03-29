@@ -195,6 +195,7 @@ void size(int& length, int& width, int& mine_number, int& length_x_width)
     bool err_length = false, err_width = false, err_mines = false;
     cout << "------------------------------" << endl;
     cout << "Please, enter field length (^) (8 - 30): ";
+    
     while (!(cin >> length) || length < 8 || length > 30)
     {
         cin.clear();
@@ -367,8 +368,9 @@ void autoopen(int x, int y, int** arr, int length, int width, int** check)
     }
 }
 //Функція для обрання дії
-bool action_choice(int x, int y, int** arr, int length, int width, int** check, bool &mistake, bool lose)
+bool action_choice(int** arr, int length, int width, int** check, bool &mistake, bool lose)
 {
+    int x = 0, y = 0;
     string action;
     cout << endl;
     cout << "Choose an action: open a field (O) or put a flag (P): ";
@@ -408,7 +410,35 @@ bool action_choice(int x, int y, int** arr, int length, int width, int** check, 
         return true;
     }
 }
-
+//Функція для перевірки поля
+void check_field(int** arr, int** check, int length, int width, bool &checker, bool &win)
+{
+    int i, j;
+    for (i = 0; i < length; i++)
+    {
+        for (j = 0; j < width; j++)
+        {
+            if (check[i][j] == 0)
+            {
+                if (arr[i][j] == 9)
+                {
+                    checker = true;
+                    win = true;
+                }
+                else
+                {
+                    checker = false;
+                    win = false;
+                    break;
+                }
+            }
+            else
+                checker = true;
+        }
+        if (!checker)
+            break;
+    }
+}
 
 //Функція для рестарту гри
 bool restart()
@@ -472,45 +502,20 @@ int main()
         //Генерація поля
         int** arr = arrfield(length, width, mine_number, length_x_width);
         int** check = arrcheck(length, width);
-        bool checker = false, win = false, lose = false, mistake = false;
+        bool checker = false, win = false, lose = false, mistake = false, choice = false;
         while (!checker)
         {
             //Перевірка на відкриття усього поля
             coutfield(arr, check, length, width, lose, mistake);
 
-            for (i = 0; i < length; i++)
-            {
-                for (j = 0; j < width; j++)
-                {
-                    if (check[i][j] == 0)
-                    {
-                        if (arr[i][j] == 9)
-                        {
-                            checker = true;
-                            win = true;
-                        }
-                        else
-                        {
-                            checker = false;
-                            win = false;
-                            break;
-                        }
-                    }
-                    else
-                        checker = true;
-                }
-                if (!checker)
-                    break;
-            }
+            check_field(arr, check, length, width, checker, win);
             if (checker)
                 break;
-
-            int x = 0, y = 0;
-
-            if (action_choice(x, y, arr, length, width, check, mistake, lose))
+            
+            choice = action_choice(arr, length, width, check, mistake, lose);
+            if (choice)
                 continue;
-
-            if (!(action_choice(x, y, arr, length, width, check, mistake, lose)))
+            if (!choice)
                 break;
         }
         
