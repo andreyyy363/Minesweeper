@@ -8,8 +8,10 @@ const int MINE = 9, FLAG = 2, CHECKED = 1, NOTHING = 0;
 //COUT ФУНКЦІЇ
 
 //Cout помилки введення розміру та кількості мін
-void err_size(bool err_length, bool err_width, bool err_mines, int length_x_width)
+void errors(bool err_length, bool err_width, bool err_mines, bool err_coord_x, bool err_coord_y, bool err_coord_check, int length_x_width)
 {
+    cin.clear();
+    fflush(stdin);
     cout << endl << "Try again!" << endl << endl;
     if (err_length)
         cout << "Please, enter field length (^) (8 - 30): ";
@@ -17,6 +19,19 @@ void err_size(bool err_length, bool err_width, bool err_mines, int length_x_widt
         cout << "Please, enter field width (>) (8 - 30): ";
     if (err_mines)
         cout << "Please, enter the number of mines (*) on the field (5 - " << length_x_width - 10 << "): ";
+    if (err_coord_x || err_coord_y)
+    {
+        cout << "Enter ";
+        if (err_coord_x)
+            cout << "X ";
+        else
+            cout << "Y ";  
+        cout << "you want to ";
+        if (err_coord_check)
+            cout << "check: ";
+        else
+            cout << "put a flag: ";
+    }
 }
 
 void stripes()
@@ -31,16 +46,11 @@ void winner(bool checker, bool win, int length, int width, int** arr, int** chec
     int i, j;
     //Перевірка на перемогу
     if (checker)
-    {
         for (i = 0; i < length; i++)
-        {
             for (j = 0; j < width; j++)
-            {
                 if (check[i][j] == FLAG && arr[i][j] == MINE)
                     win = true;
-            }
-        }
-    }
+            
     if (win)
     {
         stripes();
@@ -71,7 +81,8 @@ void loser()
 //ГОЛОВНІ ФУНКЦІЇ
 
 //Функція створення поля для гри
-int** arrfield(const int length, const int width, int mine_number, int lenght_x_width)
+
+int** create_field(const int length, const int width, int mine_number, int lenght_x_width)
 {
     //Створення масиву для поля
     int** arr = new int* [length];
@@ -90,7 +101,7 @@ int** arrfield(const int length, const int width, int mine_number, int lenght_x_
     //Генерація чисел, які будуть мінами
     int i, j;
     int *mines = new int[mine_number];
-    srand(time(NULL));
+    srand((unsigned)time(NULL));
 
     for (i = 0; i < mine_number; i++)
     {
@@ -193,25 +204,22 @@ int** arrcheck(const int length, const int width)
 void size(int& length, int& width, int& mine_number, int& length_x_width)
 {
     bool err_length = false, err_width = false, err_mines = false;
+    bool err_coord_x = false, err_coord_y = false, err_coord_check = false;
     cout << "------------------------------" << endl;
     cout << "Please, enter field length (^) (8 - 30): ";
     
     while (!(cin >> length) || length < 8 || length > 30)
     {
-        cin.clear();
-        fflush(stdin);
         err_length = true;
-        err_size(err_length, err_width, err_mines, length_x_width);
+        errors(err_length, err_width, err_mines, err_coord_x, err_coord_y, err_coord_check, length_x_width);
         err_length = false;
     }
 
     cout << "Please, enter field width (>) (8 - 30): ";
     while (!(cin >> width) || width < 8 || width > 30)
     {
-        cin.clear();
-        fflush(stdin);
         err_width = true;
-        err_size(err_length, err_width, err_mines, length_x_width);
+        errors(err_length, err_width, err_mines, err_coord_x, err_coord_y, err_coord_check, length_x_width);
         err_width = false;
     }
 
@@ -221,10 +229,8 @@ void size(int& length, int& width, int& mine_number, int& length_x_width)
 
     while (!(cin >> mine_number) || mine_number < 5 || mine_number > length_x_width - 10)
     {
-        cin.clear();
-        fflush(stdin);
         err_mines = true;
-        err_size(err_length, err_width, err_mines, length_x_width);
+        errors(err_length, err_width, err_mines, err_coord_x, err_coord_y, err_coord_check, length_x_width);
         err_mines = false;
     }
 }
@@ -280,33 +286,31 @@ void coutfield(int** arr, int** check, int length, int width, bool lose, bool& m
     }
 }
 //Функція для відкриття поля
-void fieldopening(int& x, int& y, int length, int width)
+void fieldopening(int& x, int& y, int length, int width, int length_x_width)
 {
     //Вибір місця, яке бажаємо перевірити
+    bool err_length = false, err_width = false, err_mines = false;
+    bool err_coord_x = false, err_coord_y = false, err_coord_check = false;
     cout << "Enter X you want to check: ";
-    cin >> x;
-    cout << endl;
-    while (x < 0 || x > width)
+    while (!(cin >> x) || x <= 0 || x > width)
     {
-        cout << endl;
-        cout << "Try again!" << endl;
-        cout << endl << endl;
-        cout << "Enter X you want to check: ";
-        cin >> x;
-        cout << endl;
+        err_coord_x = true;
+        err_coord_check = true;
+        errors(err_length, err_width, err_mines, err_coord_x, err_coord_y, err_coord_check, length_x_width);
+        err_coord_x = false;
+        err_coord_check = false;
     }
+    
     cout << "Enter Y you want to check: ";
-    cin >> y;
-    cout << endl;
-    while (y < 0 || y > length)
+    while (!(cin >> y) || y <= 0 || y > length)
     {
-        cout << endl;
-        cout << "Try again!" << endl;
-        cout << endl << endl;
-        cout << "Enter Y you want to check: ";
-        cin >> y;
-        cout << endl;
+        err_coord_y = true;
+        err_coord_check = true;
+        errors(err_length, err_width, err_mines, err_coord_x, err_coord_y, err_coord_check, length_x_width);
+        err_coord_y = false;
+        err_coord_check = false;
     }
+
     x -= 1;
     y -= 1;
     system("cls");
@@ -318,7 +322,7 @@ void putflag(int** check, int length, int width)
     cout << "Enter X you want to put a flag: ";
     cin >> x;
     cout << endl;
-    while (x < 0 || x > width)
+    while (x <= 0 || x > width)
     {
         cout << endl;
         cout << "Try again!" << endl;
@@ -330,7 +334,7 @@ void putflag(int** check, int length, int width)
     cout << "Enter Y you want to put a flag: ";
     cin >> y;
     cout << endl;
-    while (y < 0 || y > length)
+    while (y <= 0 || y > length)
     {
         cout << endl;
         cout << "Try again!" << endl;
@@ -368,18 +372,17 @@ void autoopen(int x, int y, int** arr, int length, int width, int** check)
     }
 }
 //Функція для обрання дії
-bool action_choice(int** arr, int length, int width, int** check, bool &mistake, bool lose)
+bool action_choice(int** arr, int length, int width, int length_x_width, int** check, bool &mistake, bool lose)
 {
     int x = 0, y = 0;
     string action;
     cout << endl;
     cout << "Choose an action: open a field (O) or put a flag (P): ";
     cin >> action;
-    cout << endl;
 
     if (action == "o" || action == "O")
     {
-        fieldopening(x, y, length, width);
+        fieldopening(x, y, length, width, length_x_width);
 
         //Якщо обрано порожнє місце
         if (arr[y][x] != 9)
@@ -490,7 +493,7 @@ void cleanram(int** arr, int** check, int length)
 //Хід гри
 int main()
 {
-    int length, width, i, j, mine_number, length_x_width;
+    int length, width, mine_number, length_x_width;
     cout << "Saper v.1.5 (alpha)" << endl;
 
     //ГРА
@@ -500,7 +503,7 @@ int main()
         system("cls");
         cout << "New game" << endl << endl;
         //Генерація поля
-        int** arr = arrfield(length, width, mine_number, length_x_width);
+        int** arr = create_field(length, width, mine_number, length_x_width);
         int** check = arrcheck(length, width);
         bool checker = false, win = false, lose = false, mistake = false, choice = false;
         while (!checker)
@@ -512,10 +515,10 @@ int main()
             if (checker)
                 break;
             
-            choice = action_choice(arr, length, width, check, mistake, lose);
+            choice = action_choice(arr, length, width, length_x_width, check, mistake, lose);
             if (choice)
                 continue;
-            if (!choice)
+            else
                 break;
         }
         
@@ -526,7 +529,7 @@ int main()
         bool stop = restart();
         if (stop)
             break;
-        if (!stop)
+        else
             continue;
     }
     return 0;
