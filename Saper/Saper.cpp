@@ -1,204 +1,16 @@
 ﻿#include <iostream>
 #include <ctime>
 #include <iomanip>
+#include "cout_functions.h"
+#include "cout_field.h"
+#include "check_field.h"
+#include "create_field.h"
+#include "restart_and_clean_ram.h"
 
 using namespace std;
-const int MINE = 9, FLAG = 2, CHECKED = 1, NOTHING = 0;
-
-//COUT ФУНКЦІЇ
-
-//Cout помилки введення розміру та кількості мін
-void errors(bool err_length, bool err_width, bool err_mines, bool err_coord_x, bool err_coord_y, bool err_coord_check, int length_x_width)
-{
-    cin.clear();
-    fflush(stdin);
-    cout << endl << "Try again!" << endl << endl;
-    if (err_length)
-        cout << "Please, enter field length (^) (8 - 30): ";
-    if (err_width)
-        cout << "Please, enter field width (>) (8 - 30): ";
-    if (err_mines)
-        cout << "Please, enter the number of mines (*) on the field (5 - " << length_x_width - 10 << "): ";
-    if (err_coord_x || err_coord_y)
-    {
-        cout << "Enter ";
-        if (err_coord_x)
-            cout << "X ";
-        else
-            cout << "Y ";  
-        cout << "you want to ";
-        if (err_coord_check)
-            cout << "check: ";
-        else
-            cout << "put a flag: ";
-    }
-}
-
-void stripes()
-{
-    cout << endl;
-    cout << "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-" << endl;
-    cout << endl;
-}
-//Cout для Win
-void winner(bool checker, bool win, int length, int width, int** arr, int** check)
-{
-    int i, j;
-    //Перевірка на перемогу
-    if (checker)
-        for (i = 0; i < length; i++)
-            for (j = 0; j < width; j++)
-                if (check[i][j] == FLAG && arr[i][j] == MINE)
-                    win = true;
-            
-    if (win)
-    {
-        stripes();
-        cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
-        cout << "##  ##   ##   ##  ##   ##           ##   ##     ##      ## ##                  #   " << endl;
-        cout << "##  ##   ##   ##  ##   ##           ##   ##     ##     # ## #              #    #  " << endl;
-        cout << " ## ##   ##   ##  ##   ##           ## # ##     ##     ## ##                     # " << endl;
-        cout << "  ##     ##   ##  ##   ##           # ### #     ##     ##  ##              #    #  " << endl;
-        cout << "  ##     ##   ##  ##   ##            ## ##      ##     ##  ##                  #   " << endl;
-        cout << "  ##      ## ##    ## ##            ##   ##    ####   ###  ##                      " << endl;
-        stripes();
-    }
-}
-//Cout для Lose
-void loser()
-{
-    stripes();
-    cout << "##  ##    ## ##   ##  ###           ####      ## ##    ## ##   #### ##             " << endl;
-    cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ##   ##  # ## ##           # " << endl;
-    cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ####       ##         #   #  " << endl;
-    cout << " ## ##   ##   ##  ##   ##            ##      ##   ##   #####     ##             #  " << endl;
-    cout << "  ##     ##   ##  ##   ##            ##      ##   ##      ###    ##         #   #  " << endl;
-    cout << "  ##     ##   ##  ##   ##            ##  ##  ##   ##  ##   ##    ##              # " << endl;
-    cout << "  ##      ## ##    ## ##            ### ###   ## ##    ## ##    ####               " << endl;
-    stripes();
-}
 
 //ГОЛОВНІ ФУНКЦІЇ
 
-//Функція створення поля для гри
-
-int** create_field(const int length, const int width, int mine_number, int lenght_x_width)
-{
-    //Створення масиву для поля
-    int** arr = new int* [length];
-    for (int i = 0; i < length; ++i)
-        arr[i] = new int[width];
-
-    //Заповнення масиву від 1 до n
-    int numb = 0;
-    for (int i = 0; i < length; i++)
-        for (int j = 0; j < width; j++)
-        {
-            numb++;
-            arr[i][j] = numb;
-        }
-
-    //Генерація чисел, які будуть мінами
-    int i, j;
-    int *mines = new int[mine_number];
-    srand((unsigned)time(NULL));
-
-    for (i = 0; i < mine_number; i++)
-    {
-        mines[i] = rand() % lenght_x_width + 1;
-    }
-
-    //Якщо номери сгенерованих мін повторюються
-    int n = 0;
-    for (j = 0; j < mine_number - 1; j++)
-    {
-        n++;
-        for (i = n; i < mine_number - 1; i++)
-            if (mines[j] == mines[i])
-                mines[j] = rand() % lenght_x_width + 1;
-    }
-
-    //Заміна номерів на 9 (*)
-    for (int k = 0; k < mine_number - 1; k++)
-    {
-        for (i = 0; i < length; i++)
-        {
-            for (j = 0; j < width; j++)
-            {
-                if (arr[i][j] == mines[k])
-                {
-                    arr[i][j] = MINE;
-                }
-            }
-        }
-    }
-
-    //Заміна номерів на 0 (.)
-    for (i = 0; i < length; i++)
-    {
-        for (j = 0; j < width; j++)
-        {
-            if (arr[i][j] != MINE)
-                arr[i][j] = NOTHING;
-        }
-    }
-    delete[] mines;
-    //Розміщення чисел, які позначають міни поблизу
-    for (i = 0; i < length; i++)
-    {
-        for (j = 0; j < width; j++)
-        {
-            if (arr[i][j] != 9)
-            {
-                if (i - 1 >= 0 && j - 1 >= 0)
-                    if (arr[i - 1][j - 1] == 9)
-                        arr[i][j] += 1;
-
-                if (i - 1 >= 0)
-                    if (arr[i - 1][j] == 9)
-                        arr[i][j] += 1;
-
-                if (i - 1 >= 0 && j + 1 < width)
-                    if (arr[i - 1][j + 1] == 9)
-                        arr[i][j] += 1;
-
-                if (j - 1 >= 0)
-                    if (arr[i][j - 1] == 9)
-                        arr[i][j] += 1;
-
-                if (j + 1 < width)
-                    if (arr[i][j + 1] == 9)
-                        arr[i][j] += 1;
-
-                if (i + 1 < length && j - 1 >= 0)
-                    if (arr[i + 1][j - 1] == 9)
-                        arr[i][j] += 1;
-
-                if (i + 1 < length)
-                    if (arr[i + 1][j] == 9)
-                        arr[i][j] += 1;
-
-                if (i + 1 < length && j + 1 < width)
-                    if (arr[i + 1][j + 1] == 9)
-                        arr[i][j] += 1;
-            }
-        }
-    }
-    return arr;
-}
-//Створення масиву для перевірки на відкритість поля
-int** arrcheck(const int length, const int width)
-{
-    int** check = new int* [length];
-    for (int i = 0; i < width; ++i)
-        check[i] = new int[width];
-
-    //Заповнення масиву нулями
-    for (int i = 0; i < length; i++)
-        for (int j = 0; j < width; j++)
-            check[i][j] = 0;
-    return check;
-}
 //Функція для запису розмірів та кількості мін
 
 void size(int& length, int& width, int& mine_number, int& length_x_width)
@@ -207,7 +19,7 @@ void size(int& length, int& width, int& mine_number, int& length_x_width)
     bool err_coord_x = false, err_coord_y = false, err_coord_check = false;
     cout << "------------------------------" << endl;
     cout << "Please, enter field length (^) (8 - 30): ";
-    
+
     while (!(cin >> length) || length < 8 || length > 30)
     {
         err_length = true;
@@ -234,57 +46,7 @@ void size(int& length, int& width, int& mine_number, int& length_x_width)
         err_mines = false;
     }
 }
-//Функція для coutа поля
-void coutfield(int** arr, int** check, int length, int width, bool lose, bool& mistake)
-{
-    int i, j;
-    if (mistake == true)
-    {
-        mistake = false;
-        return;
-    }
-    else
-    {
-        //Cout поля
-        for (j = 0; j <= width; j++)
-            cout << j << setw(5);
-        cout << endl;
 
-        for (j = 0; j <= (5 * width) - 3; j++)
-            cout << "_";
-        cout << endl;
-
-        for (i = 0; i < length; i++)
-        {
-            if (i <= 8)
-                cout << setw(0) << i + 1 << setw(2) << "|" << setw(3);
-            else
-                cout << setw(0) << i + 1 << setw(1) << "|" << setw(3);
-            for (j = 0; j < width; j++)
-            {
-                if (check[i][j] == 1)
-                {
-                    if (arr[i][j] != MINE && arr[i][j] != 0)
-                        cout << arr[i][j] << setw(5);
-                    if (arr[i][j] != MINE && arr[i][j] == 0)
-                        cout << "." << setw(5);
-                }
-                if (check[i][j] == FLAG)
-                {
-                    cout << "<|" << setw(5);
-                }
-                if (check[i][j] == NOTHING)
-                {
-                    if (arr[i][j] == MINE && lose == true)
-                        cout << "*" << setw(5);
-                    else
-                        cout << "-" << setw(5);
-                }
-            }
-            cout << " " << endl;
-        }
-    }
-}
 //Функція для відкриття поля
 void fieldopening(int& x, int& y, int length, int width, int length_x_width)
 {
@@ -300,7 +62,7 @@ void fieldopening(int& x, int& y, int length, int width, int length_x_width)
         err_coord_x = false;
         err_coord_check = false;
     }
-    
+
     cout << "Enter Y you want to check: ";
     while (!(cin >> y) || y <= 0 || y > length)
     {
@@ -372,7 +134,7 @@ void autoopen(int x, int y, int** arr, int length, int width, int** check)
     }
 }
 //Функція для обрання дії
-bool action_choice(int** arr, int length, int width, int length_x_width, int** check, bool &mistake, bool lose)
+bool action_choice(int** arr, int length, int width, int length_x_width, int** check, bool& mistake, bool lose)
 {
     int x = 0, y = 0;
     string action;
@@ -413,82 +175,6 @@ bool action_choice(int** arr, int length, int width, int length_x_width, int** c
         return true;
     }
 }
-//Функція для перевірки поля
-void check_field(int** arr, int** check, int length, int width, bool &checker, bool &win)
-{
-    int i, j;
-    for (i = 0; i < length; i++)
-    {
-        for (j = 0; j < width; j++)
-        {
-            if (check[i][j] == 0)
-            {
-                if (arr[i][j] == 9)
-                {
-                    checker = true;
-                    win = true;
-                }
-                else
-                {
-                    checker = false;
-                    win = false;
-                    break;
-                }
-            }
-            else
-                checker = true;
-        }
-        if (!checker)
-            break;
-    }
-}
-
-//Функція для рестарту гри
-bool restart()
-{
-    string restart;
-    bool stop;
-    cout << "Do you want to play again? (Y/N): ";
-    while (true)
-    {
-        cin >> restart;
-        system("cls");
-        if (restart == "y" || restart == "Y")
-        {
-            cout << endl;
-            cout << "Good choice! :)";
-            cout << endl;
-            stop = false;
-            break;
-        }
-        if (restart == "n" || restart == "N")
-        {
-            cout << endl;
-            cout << "Okay, thanks for playing!";
-            cout << endl;
-            stop = true;
-            break;
-        }
-        else
-        {
-            cout << endl << "Can you repeat?" << endl << "Do you want to play again? (Y/N): ";
-            continue;
-        }
-    }
-    return stop;
-}
-
-//Функція для очищення пам'яті
-void cleanram(int** arr, int** check, int length)
-{
-    for (int i = 0; i < length; ++i)
-        delete[] arr[i];
-    delete[] arr;
-
-    for (int i = 0; i < length; ++i)
-        delete[] check[i];
-    delete[] check;
-}
 
 //Хід гри
 int main()
@@ -514,14 +200,14 @@ int main()
             check_field(arr, check, length, width, checker, win);
             if (checker)
                 break;
-            
+
             choice = action_choice(arr, length, width, length_x_width, check, mistake, lose);
             if (choice)
                 continue;
             else
                 break;
         }
-        
+
         winner(checker, win, length, width, arr, check);
         cleanram(arr, check, length);
 
