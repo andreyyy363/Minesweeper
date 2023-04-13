@@ -130,11 +130,7 @@
     <ClCompile Include="Saper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="check_field.h" />
-    <ClInclude Include="cout_field.h" />
-    <ClInclude Include="cout_functions.h" />
-    <ClInclude Include="create_field.h" />
-    <ClInclude Include="restart_and_clean_ram.h" />
+    <ClInclude Include="constants.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
