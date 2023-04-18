@@ -21,6 +21,9 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        main_menu.h
+        main_menu.cpp
+        main_menu.ui
         images.qrc
 )
 
