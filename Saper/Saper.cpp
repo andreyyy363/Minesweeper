@@ -12,6 +12,11 @@ struct parameters
     int length, width, mine_number, number_of_cells, x, y;
 };
 
+struct bools
+{
+    bool checker, win, lose, mistake, choice;
+};
+
 //COUT ФУНКЦІЇ
 
 //Cout помилки введення розміру та кількості мін
@@ -30,17 +35,17 @@ void stripes()
     cout << endl;
 }
 //Cout для Win
-void winner(bool checker, bool win, parameters& params, int** arr, int** check)
+void winner(bools& bool_params, parameters& params, int** arr, int** check)
 {
     int i, j;
     //Перевірка на перемогу
-    if (checker)
+    if (bool_params.checker)
         for (i = 0; i < params.length; i++)
             for (j = 0; j < params.width; j++)
                 if (check[i][j] == FLAG && arr[i][j] == MINE)
-                    win = true;
+                    bool_params.win = true;
 
-    if (win)
+    if (bool_params.win)
     {
         stripes();
         cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
@@ -211,12 +216,12 @@ void size(parameters& params, int& length_x_width)
 
 
 //Функція для coutа поля
-void coutfield(int** arr, int** check, parameters& params, bool lose, bool& mistake)
+void coutfield(int** arr, int** check, parameters& params, bools & bool_params)
 {
     int i, j;
-    if (mistake)
+    if (bool_params.mistake)
     {
-        mistake = false;
+        bool_params.mistake = false;
         return;
     }
     else
@@ -251,7 +256,7 @@ void coutfield(int** arr, int** check, parameters& params, bool lose, bool& mist
                 }
                 if (check[i][j] == NOTHING)
                 {
-                    if (arr[i][j] == MINE && lose == true)
+                    if (arr[i][j] == MINE && bool_params.lose == true)
                         cout << "*" << setw(5);
                     else
                         cout << "-" << setw(5);
@@ -314,7 +319,7 @@ void autoopen(int x, int y, int** arr, parameters& params, int** check)
     }
 }
 //Функція для обрання дії
-bool action_choice(int** arr, parameters& params, int** check, bool& mistake, bool lose)
+bool action_choice(int** arr, parameters& params, int** check, bools& bool_params)
 {
     params.x = 0; 
     params.y = 0;
@@ -336,9 +341,9 @@ bool action_choice(int** arr, parameters& params, int** check, bool& mistake, bo
         //Якщо обрано місце з міною
         else
         {
-            lose = true;
+            bool_params.lose = true;
             system("cls");
-            coutfield(arr, check, params, lose, mistake);
+            coutfield(arr, check, params, bool_params);
             loser();
             return false;
         }
@@ -352,12 +357,12 @@ bool action_choice(int** arr, parameters& params, int** check, bool& mistake, bo
     else
     {
         cout << endl << "Try again!" << endl;
-        mistake = true;
+        bool_params.mistake = true;
         return true;
     }
 }
 //Функція для перевірки поля
-void check_field(int** arr, int** check, parameters& params, bool& checker, bool& win)
+void check_field(int** arr, int** check, parameters& params, bools& bool_params)
 {
     int i, j;
     for (i = 0; i < params.length; i++)
@@ -368,20 +373,20 @@ void check_field(int** arr, int** check, parameters& params, bool& checker, bool
             {
                 if (arr[i][j] == MINE)
                 {
-                    checker = true;
-                    win = true;
+                    bool_params.checker = true;
+                    bool_params.win = true;
                 }
                 else
                 {
-                    checker = false;
-                    win = false;
+                    bool_params.checker = false;
+                    bool_params.win = false;
                     break;
                 }
             }
             else
-                checker = true;
+                bool_params.checker = true;
         }
-        if (!checker)
+        if (!bool_params.checker)
             break;
     }
 }
@@ -437,6 +442,7 @@ void cleanram(int** arr, int** check, parameters& params)
 int main()
 {
     parameters game_parameters;
+    bools bool_parameters;
     int length_x_width;
     cout << "Saper v.1.5 (alpha)" << endl;
 
@@ -450,24 +456,25 @@ int main()
         //Генерація поля
         int** arr = f.create_field(game_parameters);
         int** check = arrcheck(game_parameters);
-        bool checker = false, win = false, lose = false, mistake = false, choice = false;
-        while (!checker)
+        bool_parameters.checker = false, bool_parameters.win = false;
+        bool_parameters.lose = false, bool_parameters.mistake = false, bool_parameters.choice = false;
+        while (!bool_parameters.checker)
         {
             //Перевірка на відкриття усього поля
-            coutfield(arr, check, game_parameters, lose, mistake);
+            coutfield(arr, check, game_parameters, bool_parameters);
 
-            check_field(arr, check, game_parameters, checker, win);
-            if (checker)
+            check_field(arr, check, game_parameters, bool_parameters);
+            if (bool_parameters.checker)
                 break;
 
-            choice = action_choice(arr, game_parameters, check, mistake, lose);
-            if (choice)
+            bool_parameters.choice = action_choice(arr, game_parameters, check, bool_parameters);
+            if (bool_parameters.choice)
                 continue;
             else
                 break;
         }
 
-        winner(checker, win, game_parameters, arr, check);
+        winner(bool_parameters, game_parameters, arr, check);
         cleanram(arr, check, game_parameters);
 
         //Рестарт гри (за бажанням гравця)
