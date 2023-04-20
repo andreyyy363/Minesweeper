@@ -15,6 +15,9 @@ public:
     explicit Main_menu(QWidget *parent = nullptr);
     ~Main_menu();
 
+private slots:
+    void on_label_linkActivated(const QString &link);
+
 private:
     Ui::Main_menu *ui;
 };
