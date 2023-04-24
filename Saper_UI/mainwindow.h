@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
 #include "champions.h"
 
 QT_BEGIN_NAMESPACE
@@ -26,5 +27,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Champions champ;
+    QPushButton*** xx = new QPushButton**[8];
 };
 #endif // MAINWINDOW_H
+

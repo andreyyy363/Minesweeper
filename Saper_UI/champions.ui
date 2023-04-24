@@ -14,8 +14,8 @@
    <string>Champions</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="images.qrc">
-    <normaloff>:/new/icons/icons/Champions.png</normaloff>:/new/icons/icons/Champions.png</iconset>
+   <iconset>
+    <normaloff>img/Champions.png</normaloff>img/Champions.png</iconset>
   </property>
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
@@ -50,12 +50,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Clear all rezults</string>
+    <string>Clear all results</string>
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

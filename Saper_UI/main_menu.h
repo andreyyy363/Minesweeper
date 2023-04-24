@@ -2,6 +2,8 @@
 #define MAIN_MENU_H
 
 #include <QMainWindow>
+#include "champions.h"
+#include "mainwindow.h"
 
 namespace Ui {
 class Main_menu;
@@ -16,10 +18,15 @@ public:
     ~Main_menu();
 
 private slots:
-    void on_label_linkActivated(const QString &link);
+
+    void on_pushButton_4_clicked();
+
+    void on_pushButton_8_clicked();
 
 private:
     Ui::Main_menu *ui;
+    Champions champ;
+    MainWindow wind;
 };
 
 #endif // MAIN_MENU_H

@@ -2,150 +2,140 @@
 #include <ctime>
 #include <iomanip>
 #include <string> 
-#include "constants.h"
+#include "print_functions.h"
 
 using namespace std;
-
-struct parameters
-{
-    int length, width, mine_number, number_of_cells, x, y;
-};
-
-struct bools
-{
-    bool checker, win, lose, mistake, choice;
-};
-
+/*
 class print
 {
-    protected:
+protected:
     //Функція для coutа поля
 
-        void print_column_numbers(parameters& params)
+    void print_column_numbers(parameters& params)
+    {
+        int j;
+        for (j = 0; j <= params.width; j++)
+            cout << j << setw(5);
+        cout << endl;
+        for (j = 0; j <= (5 * params.width) - 3; j++)
+            cout << "_";
+        cout << endl;
+    }
+    void print_line_numbers(int i)
+    {
+        if (i <= 8)
+            cout << setw(0) << i + 1 << setw(2) << "|" << setw(3);
+        else
+            cout << setw(0) << i + 1 << setw(1) << "|" << setw(3);
+    }
+
+    void print_empty_field(int i, int j, int** arr, int** check)
+    {
+        if (check[i][j] == 1)
         {
-            int j;
-            for (j = 0; j <= params.width; j++)
-                cout << j << setw(5);
-            cout << endl;
-            for (j = 0; j <= (5 * params.width) - 3; j++)
-                cout << "_";
-            cout << endl;
+            if (arr[i][j] != MINE && arr[i][j] != 0)
+                cout << arr[i][j] << setw(5);
+            if (arr[i][j] != MINE && arr[i][j] == 0)
+                cout << "." << setw(5);
         }
-        void print_line_numbers(int i)
+    }
+
+    void print_flag(int i, int j, int** check)
+    {
+        if (check[i][j] == FLAG)
         {
-            if (i <= 8)
-                cout << setw(0) << i + 1 << setw(2) << "|" << setw(3);
+            cout << "<|" << setw(5);
+        }
+    }
+    void print_mines(int i, int j, int** check, int** arr, bools& bool_params)
+    {
+        if (check[i][j] == NOTHING)
+        {
+            if (arr[i][j] == MINE && bool_params.lose == true)
+                cout << "*" << setw(5);
             else
-                cout << setw(0) << i + 1 << setw(1) << "|" << setw(3);
+                cout << "-" << setw(5);
         }
-
-        void print_empty_field(int i, int j, int** arr, int** check)
+    }
+public:
+    void print_board(int** arr, int** check, parameters& params, bools& bool_params)
+    {
+        int i, j;
+        if (!bool_params.mistake)
         {
-            if (check[i][j] == 1)
+            //Cout поля
+            print_column_numbers(params);
+            for (i = 0; i < params.length; i++)
             {
-                if (arr[i][j] != MINE && arr[i][j] != 0)
-                    cout << arr[i][j] << setw(5);
-                if (arr[i][j] != MINE && arr[i][j] == 0)
-                    cout << "." << setw(5);
-            }
-        }
-
-        void print_flag(int i, int j, int** check)
-        {
-            if (check[i][j] == FLAG)
-            {
-                cout << "<|" << setw(5);
-            }
-        }
-        void print_mines(int i, int j, int** check, int** arr, bools& bool_params)
-        {
-            if (check[i][j] == NOTHING)
-            {
-                if (arr[i][j] == MINE && bool_params.lose == true)
-                    cout << "*" << setw(5);
-                else
-                    cout << "-" << setw(5);
-            }
-        }
-    public:
-        void print_board(int** arr, int** check, parameters& params, bools& bool_params)
-        {
-            int i, j;
-            if (!bool_params.mistake)
-            {
-                //Cout поля
-                print_column_numbers(params);
-                for (i = 0; i < params.length; i++)
+                print_line_numbers(i);
+                for (j = 0; j < params.width; j++)
                 {
-                    print_line_numbers(i);
-                    for (j = 0; j < params.width; j++)
-                    {
-                        print_empty_field(i, j, arr, check);
-                        print_flag(i, j, check);
-                        print_mines(i, j, check, arr, bool_params);
-                    }
-                    cout << " " << endl;
+                    print_empty_field(i, j, arr, check);
+                    print_flag(i, j, check);
+                    print_mines(i, j, check, arr, bool_params);
                 }
-            }
-            else
-            {
-                bool_params.mistake = false;
-                return;
+                cout << " " << endl;
             }
         }
-
-        void errors()
+        else
         {
-            cin.clear();
-            fflush(stdin);
-            cout << endl << "Try again: ";
+            bool_params.mistake = false;
+            return;
         }
+    }
 
-        void stripes()
-        {
-            cout << endl;
-            cout << "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-" << endl;
-            cout << endl;
-        }
-        //Cout для Win
-        void winner(bools& bool_params, parameters& params, int** arr, int** check)
-        {
-            int i, j;
-            //Перевірка на перемогу
-            if (bool_params.checker)
-                for (i = 0; i < params.length; i++)
-                    for (j = 0; j < params.width; j++)
-                        if (check[i][j] == FLAG && arr[i][j] == MINE)
-                            bool_params.win = true;
+    void errors()
+    {
+        cin.clear();
+        fflush(stdin);
+        cout << endl << "Try again: ";
+    }
 
-            if (bool_params.win)
-            {
-                stripes();
-                cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
-                cout << "##  ##   ##   ##  ##   ##           ##   ##     ##      ## ##                  #   " << endl;
-                cout << "##  ##   ##   ##  ##   ##           ##   ##     ##     # ## #              #    #  " << endl;
-                cout << " ## ##   ##   ##  ##   ##           ## # ##     ##     ## ##                     # " << endl;
-                cout << "  ##     ##   ##  ##   ##           # ### #     ##     ##  ##              #    #  " << endl;
-                cout << "  ##     ##   ##  ##   ##            ## ##      ##     ##  ##                  #   " << endl;
-                cout << "  ##      ## ##    ## ##            ##   ##    ####   ###  ##                      " << endl;
-                stripes();
-            }
-        }
-        //Cout для Lose
-        void loser()
+    void stripes()
+    {
+        cout << endl;
+        cout << "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-" << endl;
+        cout << endl;
+    }
+    //Cout для Win
+    void winner(bools& bool_params, parameters& params, int** arr, int** check)
+    {
+        int i, j;
+        //Перевірка на перемогу
+        if (bool_params.checker)
+            for (i = 0; i < params.length; i++)
+                for (j = 0; j < params.width; j++)
+                    if (check[i][j] == FLAG && arr[i][j] == MINE)
+                        bool_params.win = true;
+
+        if (bool_params.win)
         {
             stripes();
-            cout << "##  ##    ## ##   ##  ###           ####      ## ##    ## ##   #### ##             " << endl;
-            cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ##   ##  # ## ##           # " << endl;
-            cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ####       ##         #   #  " << endl;
-            cout << " ## ##   ##   ##  ##   ##            ##      ##   ##   #####     ##             #  " << endl;
-            cout << "  ##     ##   ##  ##   ##            ##      ##   ##      ###    ##         #   #  " << endl;
-            cout << "  ##     ##   ##  ##   ##            ##  ##  ##   ##  ##   ##    ##              # " << endl;
-            cout << "  ##      ## ##    ## ##            ### ###   ## ##    ## ##    ####               " << endl;
+            cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
+            cout << "##  ##   ##   ##  ##   ##           ##   ##     ##      ## ##                  #   " << endl;
+            cout << "##  ##   ##   ##  ##   ##           ##   ##     ##     # ## #              #    #  " << endl;
+            cout << " ## ##   ##   ##  ##   ##           ## # ##     ##     ## ##                     # " << endl;
+            cout << "  ##     ##   ##  ##   ##           # ### #     ##     ##  ##              #    #  " << endl;
+            cout << "  ##     ##   ##  ##   ##            ## ##      ##     ##  ##                  #   " << endl;
+            cout << "  ##      ## ##    ## ##            ##   ##    ####   ###  ##                      " << endl;
             stripes();
         }
+    }
+    //Cout для Lose
+    void loser()
+    {
+        stripes();
+        cout << "##  ##    ## ##   ##  ###           ####      ## ##    ## ##   #### ##             " << endl;
+        cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ##   ##  # ## ##           # " << endl;
+        cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ####       ##         #   #  " << endl;
+        cout << " ## ##   ##   ##  ##   ##            ##      ##   ##   #####     ##             #  " << endl;
+        cout << "  ##     ##   ##  ##   ##            ##      ##   ##      ###    ##         #   #  " << endl;
+        cout << "  ##     ##   ##  ##   ##            ##  ##  ##   ##  ##   ##    ##              # " << endl;
+        cout << "  ##      ## ##    ## ##            ### ###   ## ##    ## ##    ####               " << endl;
+        stripes();
+    }
 };
-
+*/
 class field
 {
     protected:
@@ -242,7 +232,7 @@ class field
         //Функція для запису розмірів та кількості мін
         void size(parameters& params, int& length_x_width)
         {
-            print p;
+            Print p;
             cout << "------------------------------" << endl;
             cout << "Please, enter field length (^) (8 - 30): ";
             while (!(cin >> params.length) || params.length < MIN_FIELD_SIZE || params.length > MAX_FIELD_SIZE)
@@ -271,7 +261,7 @@ class action
         //Функція для відкриття поля
         void open_field(parameters& params)
         {
-            print p;
+            Print p;
             //Вибір місця, яке бажаємо перевірити
             cout << "Enter X you want to check: ";
             while (!(cin >> params.x) || params.x <= 0 || params.x > params.width)
@@ -287,7 +277,7 @@ class action
         //Функція для встановлення прапора
         void putflag(int** check, parameters& params)
         {
-            print p;
+            Print p;
             cout << "Enter X you want to put a flag: ";
             while (!(cin >> params.x) || params.x <= 0 || params.x > params.width)
                 p.errors();
@@ -326,7 +316,7 @@ class action
         //Функція для обрання дії
         bool action_choice(int** arr, parameters& params, int** check, bools& bool_params)
         {
-            print p;
+            Print p;
             params.x = 0;
             params.y = 0;
             string action;
@@ -482,7 +472,7 @@ int main()
     parameters game_parameters;
     bools bool_parameters;
     field f;
-    print p;
+    Print p;
     action a;
     check ch;
     clean c;

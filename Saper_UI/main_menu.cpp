@@ -14,3 +14,15 @@ Main_menu::~Main_menu()
 }
 
 
+
+void Main_menu::on_pushButton_4_clicked()
+{
+    wind.show();
+}
+
+
+void Main_menu::on_pushButton_8_clicked()
+{
+    champ.show();
+}
+
