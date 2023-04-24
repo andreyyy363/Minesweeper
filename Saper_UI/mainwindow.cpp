@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
         for (int j = 0; j < 8; j++)
         {
             xx[i][j] = new QPushButton();
-            ui->gridLayout->addWidget(xx[i][j]);
+            ui->verticalLayout->addWidget(xx[i][j]);
         }
     }
 }

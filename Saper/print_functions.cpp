@@ -1,11 +1,6 @@
+#include "libraries.h"
 #include "print_functions.h"
 #include "constants_and_variables.h"
-#include <iostream>
-#include <ctime>
-#include <iomanip>
-#include <string> 
-
-using namespace std;
 
 void Print::print_column_numbers(parameters& params)
 {

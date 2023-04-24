@@ -127,12 +127,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="actions.cpp" />
     <ClCompile Include="print_functions.cpp" />
-    <ClCompile Include="Saper.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="field.cpp" />
+    <ClCompile Include="check_array.cpp" />
+    <ClCompile Include="clean.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="actions.h" />
+    <ClInclude Include="check_array.h" />
     <ClInclude Include="constants_and_variables.h" />
+    <ClInclude Include="field.h" />
+    <ClInclude Include="clean.h" />
+    <ClInclude Include="libraries.h" />
     <ClInclude Include="print_functions.h" />
+    <ClInclude Include="restartr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
