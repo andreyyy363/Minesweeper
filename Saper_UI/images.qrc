@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/backgrounds">
+        <file>img/background_menu.jpg</file>
+        <file>img/landscape.png</file>
+        <file>img/clear.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>img/Champions.png</file>
+        <file>img/Game_icon.png</file>
+        <file>img/happy1.png</file>
+        <file>img/Rules.png</file>
+        <file>img/Settings.png</file>
+    </qresource>
+</RCC>
