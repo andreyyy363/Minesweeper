@@ -3,6 +3,8 @@
         <file>img/background_menu.jpg</file>
         <file>img/landscape.png</file>
         <file>img/clear.png</file>
+        <file>img/background_1.png</file>
+        <file>img/rules_background.png</file>
     </qresource>
     <qresource prefix="/icons">
         <file>img/Champions.png</file>
@@ -10,5 +12,8 @@
         <file>img/happy1.png</file>
         <file>img/Rules.png</file>
         <file>img/Settings.png</file>
+    </qresource>
+    <qresource prefix="/field">
+        <file>img/cell_covered.png</file>
     </qresource>
 </RCC>

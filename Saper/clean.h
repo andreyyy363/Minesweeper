@@ -3,10 +3,8 @@
 
 class Clean
 {
-protected:
-    void clean_arr(int** arr, parameters& params);
-
-    void clean_check(int** check, parameters& params);
+private:
+    void clean_resouce(int** arr, parameters& params);
 
 public:
     void clean_ram(int** arr, int** check, parameters& params);

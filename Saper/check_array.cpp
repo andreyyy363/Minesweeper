@@ -1,10 +1,8 @@
-#include "libraries.h"
-#include "constants_and_variables.h"
 #include "field.h"
 #include "check_array.h"
 
 //Створення масиву для перевірки на відкритість поля
-int** Check::arrcheck(parameters & params)
+int** Check::arrcheck()
 {
     int** check = new int* [params.length];
     for (int i = 0; i < params.length; ++i)
@@ -18,7 +16,7 @@ int** Check::arrcheck(parameters & params)
 }
 
 //Функція для перевірки поля
-void Check::check_field(int** arr, int** check, parameters& params, bools& bool_params)
+void Check::check_field(int** arr, int** check, bools& bool_params)
 {
     int i, j;
     for (i = 0; i < params.length; i++)
@@ -45,4 +43,20 @@ void Check::check_field(int** arr, int** check, parameters& params, bools& bool_
         if (!bool_params.checker)
             break;
     }
+}
+
+void Check::check_win(bools& bool_params, int** arr, int** check)
+{
+    int i, j;
+    //Перевірка на перемогу
+    if (bool_params.checker)
+        for (i = 0; i < params.length; i++)
+            for (j = 0; j < params.width; j++)
+                if (check[i][j] == FLAG && arr[i][j] == MINE)
+                    bool_params.win = true;
+}
+
+Check::Check(parameters& params_)
+{
+    params = params_;
 }

@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include "champions.h"
 #include "mainwindow.h"
+#include "rules.h"
+#include "constants_and_variables.h"
+
+
 
 namespace Ui {
 class Main_menu;
@@ -16,17 +20,15 @@ class Main_menu : public QMainWindow
 public:
     explicit Main_menu(QWidget *parent = nullptr);
     ~Main_menu();
-
 private slots:
 
-    void on_pushButton_4_clicked();
-
-    void on_pushButton_8_clicked();
+    void common();
 
 private:
     Ui::Main_menu *ui;
-    Champions champ;
-    MainWindow wind;
+
+    champions champ;
+    rules rule;
 };
 
 #endif // MAIN_MENU_H

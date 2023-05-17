@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Champions</class>
- <widget class="QWidget" name="Champions">
+ <class>champions</class>
+ <widget class="QDialog" name="champions">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>391</width>
-    <height>463</height>
+    <width>555</width>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Champions</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>img/Champions.png</normaloff>img/Champions.png</iconset>
+   <iconset resource="images.qrc">
+    <normaloff>:/icons/img/Champions.png</normaloff>:/icons/img/Champions.png</iconset>
   </property>
-  <widget class="QListWidget" name="listWidget">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>130</y>
-     <width>256</width>
-     <height>192</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>380</y>
+     <x>410</x>
+     <y>390</y>
      <width>101</width>
      <height>24</height>
     </rect>
@@ -44,7 +34,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>380</y>
+     <y>390</y>
      <width>101</width>
      <height>24</height>
     </rect>
@@ -53,7 +43,34 @@
     <string>Clear all results</string>
    </property>
   </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>471</width>
+     <height>311</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>Nick</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Time</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Difficulty</string>
+    </property>
+   </column>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

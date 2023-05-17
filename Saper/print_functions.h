@@ -17,8 +17,7 @@ public:
     void errors();
     void stripes();
     //Cout для Win
-    void winner(bools& bool_params, parameters& params, int** arr, int** check);
+    void winner(bools& bool_params);
     //Cout для Lose
     void loser();
-
 };

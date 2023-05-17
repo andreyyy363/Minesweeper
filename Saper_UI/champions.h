@@ -1,25 +1,22 @@
 #ifndef CHAMPIONS_H
 #define CHAMPIONS_H
 
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
-class Champions;
+class champions;
 }
 
-class Champions : public QWidget
+class champions : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Champions(QWidget *parent = nullptr);
-    ~Champions();
-
-private slots:
-    void on_pushButton_clicked();
+    explicit champions(QWidget *parent = nullptr);
+    ~champions();
 
 private:
-    Ui::Champions *ui;
+    Ui::champions *ui;
 };
 
 #endif // CHAMPIONS_H

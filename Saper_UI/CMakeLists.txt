@@ -14,17 +14,26 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
 
-        champions.h
-        champions.cpp
-        champions.ui
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        main_menu.h
-        main_menu.cpp
-        main_menu.ui
-        images.qrc
+    libraries.h
+    champions.h
+    champions.cpp
+    champions.ui
+    rules.h
+    rules.cpp
+    rules.ui
+    field.h
+    constants_and_variables.h
+    field.cpp
+    check.cpp
+    check.h
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
+    main_menu.h
+    main_menu.cpp
+    main_menu.ui
+    images.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
