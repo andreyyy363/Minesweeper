@@ -3,3 +3,9 @@
 ################################################################################
 
 /Saper/.vs/Saper/v17/Browse.VC.opendb
+/Saper/.vs*
+/Saper/DEBUG
+/Saper/x64
+/Saper/x64/Debug/actions.obj
+/Saper/.vs/Saper/v17/ipch/AutoPCH/243f7f61290826c3/ACTIONS.ipch
+/Saper/x64/Debug/actions.obj
