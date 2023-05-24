@@ -10,7 +10,7 @@ private:
 
     void check_input(string var_name, int& var, int comparator);
     //Функція для встановлення прапора
-    void coordinates(string action);
+    void get_coordinates(string action);
     //Функція для автоматичного відкривання поля, якщо обрано порожнє місце
     void autoopen(int x, int y);
 

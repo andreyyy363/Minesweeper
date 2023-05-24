@@ -30,9 +30,6 @@
     <ClCompile Include="check_array.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="clean.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants_and_variables.h">
@@ -53,10 +50,7 @@
     <ClInclude Include="check_array.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="clean.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="restartr.h">
+    <ClInclude Include="restart.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

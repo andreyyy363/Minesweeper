@@ -2,7 +2,7 @@
 #include "check_array.h"
 
 //Створення масиву для перевірки на відкритість поля
-int** Check::arrcheck()
+int** Check::check_arr()
 {
     int** check = new int* [params.length];
     for (int i = 0; i < params.length; ++i)

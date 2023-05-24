@@ -14,10 +14,10 @@ protected:
     void print_mines(int i, int j, int** check, int** arr, bools& bool_params);       
 public:
     void print_board(int** arr, int** check, parameters& params, bools& bool_params);
-    void errors();
-    void stripes();
+    void print_error();
+    void print_stripes();
     //Cout для Win
-    void winner(bools& bool_params);
+    void print_win(bools& bool_params);
     //Cout для Lose
-    void loser();
+    void print_lose();
 };

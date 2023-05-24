@@ -11,7 +11,7 @@ public:
     Check(){};
 
     //Створення масиву для перевірки на відкритість поля
-    int** arrcheck();
+    int** check_arr();
     //Функція для перевірки поля
     void check_field(int** arr, int** check, bools& bool_params);
     void check_win(bools& bool_params, int** arr, int** check);

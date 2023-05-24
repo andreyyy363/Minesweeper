@@ -10,10 +10,10 @@ void Action::check_input(string var_name, int& var, int comparator)
     Print p;
     cout << "Enter " << var_name << ": ";
     while (!(cin >> var) || var <= 0 || var > comparator)
-        p.errors();
+        p.print_error();
 }
 
-void Action::coordinates(string action)
+void Action::get_coordinates(string action)
 {   
     check_input("X", params.x, params.width);
     check_input("Y", params.y, params.length);
@@ -63,7 +63,7 @@ bool Action::action_choice(bools& bool_params)
 
     if (OPEN_ACTIONS.find(action) != string::npos)
     {
-        coordinates(action);
+        get_coordinates(action);
 
         //якщо обрано порожнЇ м≥сце
         if (arr[params.y][params.x] != MINE)
@@ -75,12 +75,12 @@ bool Action::action_choice(bools& bool_params)
         bool_params.lose = true;
         system("cls");
         p.print_board(arr, check, params, bool_params);
-        p.loser();
+        p.print_lose();
         return false;
     }
     else if(FLAG_ACTIONS.find(action) != string::npos)
     {
-        coordinates(action);
+        get_coordinates(action);
         return true;
     }
     cout << endl << "Try again!" << endl;

@@ -69,26 +69,26 @@ void Print::print_board(int** arr, int** check, parameters& params, bools& bool_
     }
 }
 
-void Print::errors()
+void Print::print_error()
 {
     cin.clear();
     fflush(stdin);
     cout << endl << "Try again: ";
 }
 
-void Print::stripes()
+void Print::print_stripes()
 {
     cout << endl;
     cout << "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-" << endl;
     cout << endl;
 }
 //Cout для Win
-void Print::winner(bools& bool_params)
+void Print::print_win(bools& bool_params)
 {
 
     if (bool_params.win)
     {
-        stripes();
+        print_stripes();
         cout << "##  ##    ## ##   ##  ###           ##   ##    ####   ###  ##                      " << endl;
         cout << "##  ##   ##   ##  ##   ##           ##   ##     ##      ## ##                  #   " << endl;
         cout << "##  ##   ##   ##  ##   ##           ##   ##     ##     # ## #              #    #  " << endl;
@@ -96,13 +96,13 @@ void Print::winner(bools& bool_params)
         cout << "  ##     ##   ##  ##   ##           # ### #     ##     ##  ##              #    #  " << endl;
         cout << "  ##     ##   ##  ##   ##            ## ##      ##     ##  ##                  #   " << endl;
         cout << "  ##      ## ##    ## ##            ##   ##    ####   ###  ##                      " << endl;
-        stripes();
+        print_stripes();
     }
 }
 //Cout для Lose
-void Print::loser()
+void Print::print_lose()
 {
-    stripes();
+    print_stripes();
     cout << "##  ##    ## ##   ##  ###           ####      ## ##    ## ##   #### ##             " << endl;
     cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ##   ##  # ## ##           # " << endl;
     cout << "##  ##   ##   ##  ##   ##            ##      ##   ##  ####       ##         #   #  " << endl;
@@ -110,6 +110,6 @@ void Print::loser()
     cout << "  ##     ##   ##  ##   ##            ##      ##   ##      ###    ##         #   #  " << endl;
     cout << "  ##     ##   ##  ##   ##            ##  ##  ##   ##  ##   ##    ##              # " << endl;
     cout << "  ##      ## ##    ## ##            ### ###   ## ##    ## ##    ####               " << endl;
-    stripes();
+    print_stripes();
 }
 

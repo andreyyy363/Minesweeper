@@ -79,16 +79,17 @@ void Field::size()
     cout << "------------------------------" << endl;
     cout << "Please, enter Field length (^) (8 - 30): ";
     while (!(cin >> params.length) || params.length < MIN_FIELD_SIZE || params.length > MAX_FIELD_SIZE)
-        p.errors();
+        p.print_error();
 
     cout << "Please, enter Field width (>) (8 - 30): ";
     while (!(cin >> params.width) || params.width < MIN_FIELD_SIZE || params.width > MAX_FIELD_SIZE)
-        p.errors();
+        p.print_error();
 
     length_x_width = params.length * params.width;
     cout << "Please, enter the number of mines (*) on the Field (5 - " << length_x_width - MIN_AVAILABLE_CELLS << "): ";
     while (!(cin >> params.mine_number) || params.mine_number < MIN_AMOUNT_MINES || params.mine_number > length_x_width - MIN_AVAILABLE_CELLS)
-        p.errors();
+        p.print_error();
+    params.mine_number -= 1;
 }
 
 void Field::create_field()
@@ -97,6 +98,18 @@ void Field::create_field()
     create_array();
     put_number_of_mines();
     delete[] mines;
+}
+void Field::clean_resouce(int** resource, parameters& params)
+{
+    for (int i = 0; i < params.length; ++i)
+        delete[] resource[i];
+    delete[] resource;
+}
+
+void Field::clean_ram(int** arr, int** check, parameters& params)
+{
+    clean_resouce(arr, params);
+    clean_resouce(check, params);
 }
 
 parameters Field::getParams()
@@ -107,3 +120,4 @@ int** Field::getArray()
 {
     return arr;
 }
+

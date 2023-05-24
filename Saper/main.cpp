@@ -3,8 +3,7 @@
 #include "field.h"
 #include "actions.h"
 #include "check_array.h"
-#include "clean.h"
-#include "restartr.h"
+#include "restart.h"
 
 using namespace std;
 
@@ -17,7 +16,6 @@ int main()
     Print p;
     Action a = Action();
     Check ch;
-    Clean c;
     
     cout << "Saper v.1.5 (pre-release)" << endl;
 
@@ -31,7 +29,7 @@ int main()
         f.create_field();
         game_parameters = f.getParams();
         ch = Check(game_parameters);
-        int** check = ch.arrcheck();
+        int** check = ch.check_arr();
         bool_parameters.checker = false, bool_parameters.win = false;
         bool_parameters.lose = false, bool_parameters.mistake = false, bool_parameters.choice = false;
         while (!bool_parameters.checker)
@@ -51,8 +49,8 @@ int main()
         }
 
         ch.check_win(bool_parameters, f.getArray(), check);
-        p.winner(bool_parameters);
-        c.clean_ram(f.getArray(), check, game_parameters);
+        p.print_win(bool_parameters);
+        f.clean_ram(f.getArray(), check, game_parameters);
 
         //Рестарт гри (за бажанням гравця)
         
