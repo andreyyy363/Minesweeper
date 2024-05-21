@@ -1,0 +1,26 @@
+{
+	"BUILD_DIR" : "D:/Projects/build-Saper_widgets-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/Saper_widgets_autogen",
+	"CMAKE_BINARY_DIR" : "D:/Projects/build-Saper_widgets-Desktop_Qt_6_5_0_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/Projects/build-Saper_widgets-Desktop_Qt_6_5_0_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/Projects/Saper_widgets",
+	"CMAKE_SOURCE_DIR" : "D:/Projects/Saper_widgets",
+	"INCLUDE_DIR" : "D:/Projects/build-Saper_widgets-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/Saper_widgets_autogen/include",
+	"INPUTS" : 
+	[
+		"D:/Projects/Saper_widgets/icons/happy.png",
+		"D:/Projects/Saper_widgets/icons/Champions.png",
+		"D:/Projects/Saper_widgets/icons/landscape.png",
+		"D:/Projects/Saper_widgets/icons/Game_icon.png",
+		"D:/Projects/Saper_widgets/icons/happy1.png"
+	],
+	"LOCK_FILE" : "D:/Projects/build-Saper_widgets-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/Saper_widgets_autogen.dir/AutoRcc_images_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "images" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_images.cpp",
+	"RCC_EXECUTABLE" : "D:/Progs/Qt/6.5.0/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "D:/Projects/build-Saper_widgets-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/Saper_widgets_autogen.dir/AutoRcc_images_EWIEGA46WW_Used.txt",
+	"SOURCE" : "D:/Projects/Saper_widgets/images.qrc",
+	"VERBOSITY" : 0
+}
